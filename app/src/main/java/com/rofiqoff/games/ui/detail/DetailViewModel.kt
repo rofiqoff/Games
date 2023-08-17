@@ -9,7 +9,6 @@ import com.rofiqoff.games.data.domain.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,12 +18,11 @@ class DetailViewModel @Inject constructor(
     private val repository: GameRepository,
 ) : ViewModel() {
 
-    private val _stateDetail = MutableStateFlow<UiState<GameDetail>>(UiState.Idle)
+    private val _stateDetail = MutableStateFlow<UiState<GameDetail>>(UiState.Loading)
     val stateDetail: StateFlow<UiState<GameDetail>> = _stateDetail
 
     fun fetchDetailGame(slug: String) = viewModelScope.launch {
         repository.getGameDetail(slug)
-            .onStart { _stateDetail.update { UiState.Loading } }
             .collect { result ->
                 when (result) {
                     is AppResponse.Success -> {

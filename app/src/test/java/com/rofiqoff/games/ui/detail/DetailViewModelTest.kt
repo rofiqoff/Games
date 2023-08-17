@@ -10,13 +10,15 @@ import com.rofiqoff.games.helper.MainDispatcherRule
 import com.rofiqoff.games.utils.Constants
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.mockito.junit.MockitoJUnitRunner
 import java.net.SocketTimeoutException
 
+@RunWith(MockitoJUnitRunner::class)
 class DetailViewModelTest {
 
     @get:Rule
@@ -24,32 +26,31 @@ class DetailViewModelTest {
 
     private lateinit var apiService: ApiService
     private lateinit var repository: GameRepository
+    private lateinit var viewModel: DetailViewModel
 
     private val dummyResponse: GameDetailResponse
         get() = GameDetailResponse(
             "Test Name", "abc", "2023-08-17", "", "", 5.0
         )
 
-    @Before
-    fun setUp() {
+    private fun initialize() {
         apiService = mock(ApiService::class.java)
-
         repository = GameRepositoryImpl(apiService)
+        viewModel = DetailViewModel(repository)
     }
 
     @Test
     fun givenResponseSuccess_whenFetchDetailGame_shouldReturnGameDetail() = runTest {
+        initialize()
+
         // given
         `when`(apiService.getGameDetail("slug")).thenReturn(dummyResponse)
 
-        val viewModel = DetailViewModel(repository)
-
         val state = viewModel.stateDetail.testIn(backgroundScope)
-        assert(state.awaitItem() == UiState.Idle)
+        assert(state.awaitItem() == UiState.Loading)
 
         // when
         viewModel.fetchDetailGame("slug")
-        assert(state.awaitItem() == UiState.Loading)
 
         // then
         val result = state.awaitItem()
@@ -61,13 +62,15 @@ class DetailViewModelTest {
 
     @Test
     fun givenResponseError_whenFetchDetailGame_shouldReturnError() = runTest {
+        initialize()
+
         // given
         `when`(apiService.getGameDetail("slug")).then { throw SocketTimeoutException("Time out") }
 
-        val viewModel = DetailViewModel(repository)
+        viewModel = DetailViewModel(repository)
 
         val state = viewModel.stateDetail.testIn(backgroundScope)
-        assert(state.awaitItem() == UiState.Idle)
+        assert(state.awaitItem() == UiState.Loading)
 
         // when
         viewModel.fetchDetailGame("slug")
@@ -85,17 +88,18 @@ class DetailViewModelTest {
     @Test
     fun givenResponseSuccess_whenFetchDetailGame_shouldReturnSuccessAndShowCorrectReleaseDate() =
         runTest {
+            initialize()
+
             // given
             `when`(apiService.getGameDetail("slug")).thenReturn(dummyResponse)
 
-            val viewModel = DetailViewModel(repository)
+            viewModel = DetailViewModel(repository)
 
             val state = viewModel.stateDetail.testIn(backgroundScope)
-            assert(state.awaitItem() == UiState.Idle)
+            assert(state.awaitItem() == UiState.Loading)
 
             // when
             viewModel.fetchDetailGame("slug")
-            assert(state.awaitItem() == UiState.Loading)
 
             // then
             val result = state.awaitItem()
