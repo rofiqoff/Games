@@ -47,6 +47,7 @@ class HomeViewModelTest {
 
     private fun initialize() {
         apiService = mock(ApiService::class.java)
+
         repository = GameRepositoryImpl(apiService)
         viewModel = HomeViewModel(repository)
     }

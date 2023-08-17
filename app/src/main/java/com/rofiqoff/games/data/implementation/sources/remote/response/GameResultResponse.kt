@@ -6,7 +6,7 @@ import com.rofiqoff.games.utils.Constants
 import com.rofiqoff.games.utils.convertAs
 
 data class GameResultResponse(
-    val id: Int?,
+    val id: Long?,
     val slug: String,
     val name: String,
     val released: String?,
@@ -17,10 +17,11 @@ data class GameResultResponse(
 
     val asGameResult: GameResult
         get() = GameResult(
+            id = id ?: 0,
             slug = slug,
             name = name,
             released = released.orEmpty() convertAs Constants.DATE_TIME_FORMAT,
-            backgroundImage = backgroundImage.orEmpty(),
+            imageUrl = backgroundImage.orEmpty(),
             rating = rating.toString(),
         )
 

@@ -89,7 +89,6 @@ dependencies {
 
     val roomVersion = "2.5.2"
     implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
     val mockitoVersion = "4.4.0"

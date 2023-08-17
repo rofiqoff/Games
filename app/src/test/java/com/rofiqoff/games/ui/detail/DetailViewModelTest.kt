@@ -2,8 +2,11 @@ package com.rofiqoff.games.ui.detail
 
 import app.cash.turbine.testIn
 import com.rofiqoff.games.data.domain.helper.UiState
+import com.rofiqoff.games.data.domain.repository.GameFavoriteRepository
 import com.rofiqoff.games.data.domain.repository.GameRepository
+import com.rofiqoff.games.data.implementation.repository.GameFavoriteRepositoryImpl
 import com.rofiqoff.games.data.implementation.repository.GameRepositoryImpl
+import com.rofiqoff.games.data.implementation.sources.local.database.AppDatabase
 import com.rofiqoff.games.data.implementation.sources.remote.api.ApiService
 import com.rofiqoff.games.data.implementation.sources.remote.response.GameDetailResponse
 import com.rofiqoff.games.helper.MainDispatcherRule
@@ -24,19 +27,24 @@ class DetailViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private lateinit var database: AppDatabase
     private lateinit var apiService: ApiService
     private lateinit var repository: GameRepository
+    private lateinit var favoriteRepository: GameFavoriteRepository
     private lateinit var viewModel: DetailViewModel
 
     private val dummyResponse: GameDetailResponse
         get() = GameDetailResponse(
-            "Test Name", "abc", "2023-08-17", "", "", 5.0
+            1, "Test Name", "abc", "2023-08-17", "", "", 5.0
         )
 
     private fun initialize() {
         apiService = mock(ApiService::class.java)
+        database = mock(AppDatabase::class.java)
+
         repository = GameRepositoryImpl(apiService)
-        viewModel = DetailViewModel(repository)
+        favoriteRepository = GameFavoriteRepositoryImpl(database)
+        viewModel = DetailViewModel(repository, favoriteRepository)
     }
 
     @Test
@@ -67,8 +75,6 @@ class DetailViewModelTest {
         // given
         `when`(apiService.getGameDetail("slug")).then { throw SocketTimeoutException("Time out") }
 
-        viewModel = DetailViewModel(repository)
-
         val state = viewModel.stateDetail.testIn(backgroundScope)
         assert(state.awaitItem() == UiState.Loading)
 
@@ -92,8 +98,6 @@ class DetailViewModelTest {
 
             // given
             `when`(apiService.getGameDetail("slug")).thenReturn(dummyResponse)
-
-            viewModel = DetailViewModel(repository)
 
             val state = viewModel.stateDetail.testIn(backgroundScope)
             assert(state.awaitItem() == UiState.Loading)
