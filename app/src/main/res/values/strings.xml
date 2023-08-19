@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Games</string>
+    <string name="menu_home_title">Home</string>
+    <string name="menu_favorite_title">Favorite</string>
+    <string name="tag_main_navigation">main navigation</string>
+    <string name="tag_dashboard_navigation">dashboard navigation</string>
+    <string name="empty_list_message">Your Favorite Game will show here. \nSave your favorite game now</string>
+
+    <string name="release_date_label">Released on %s</string>
+    <string name="content_description_back_button">back</string>
 </resources>

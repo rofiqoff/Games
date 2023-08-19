@@ -1,4 +1,4 @@
-package com.rofiqoff.games.ui.favorite
+package com.rofiqoff.games.ui.dashboard.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GameFavoriteViewModel @Inject constructor(
+class FavoriteViewModel @Inject constructor(
     private val repository: GameFavoriteRepository,
 ) : ViewModel() {
 

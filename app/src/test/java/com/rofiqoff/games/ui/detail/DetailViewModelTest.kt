@@ -35,7 +35,7 @@ class DetailViewModelTest {
 
     private val dummyResponse: GameDetailResponse
         get() = GameDetailResponse(
-            1, "Test Name", "abc", "2023-08-17", "", "", 5.0
+            1, "Test Name", "abc", "", "2023-08-17", "", "", 5.0
         )
 
     private fun initialize() {

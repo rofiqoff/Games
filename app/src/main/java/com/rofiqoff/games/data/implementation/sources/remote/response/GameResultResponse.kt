@@ -11,7 +11,7 @@ data class GameResultResponse(
     val name: String,
     val released: String?,
     @SerializedName("background_image")
-    val backgroundImage: String?,
+    val imageUrl: String?,
     val rating: Double,
 ) {
 
@@ -21,7 +21,7 @@ data class GameResultResponse(
             slug = slug,
             name = name,
             released = released.orEmpty() convertAs Constants.DATE_TIME_FORMAT,
-            imageUrl = backgroundImage.orEmpty(),
+            imageUrl = imageUrl.orEmpty(),
             rating = rating.toString(),
         )
 

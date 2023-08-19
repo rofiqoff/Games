@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/fragment_dashboard">
+
+    <fragment
+        android:id="@+id/fragment_dashboard"
+        android:name="com.rofiqoff.games.ui.dashboard.DashboardFragment" />
+
+    <fragment
+        android:id="@+id/fragment_detail"
+        android:name="com.rofiqoff.games.ui.detail.DetailFragment" />
+
+</navigation>

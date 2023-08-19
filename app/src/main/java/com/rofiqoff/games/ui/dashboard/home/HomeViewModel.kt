@@ -1,4 +1,4 @@
-package com.rofiqoff.games.ui.home
+package com.rofiqoff.games.ui.dashboard.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,7 @@ import com.rofiqoff.games.data.domain.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +27,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchListGame(page: Int) = viewModelScope.launch {
         repository.getAllGames(page)
+            .onStart { _listGame.update { UiState.Loading } }
             .collect { result ->
                 when (result) {
                     is AppResponse.Success -> {
@@ -41,6 +43,7 @@ class HomeViewModel @Inject constructor(
 
     fun searchGame(query: String) = viewModelScope.launch {
         repository.searchGame(query)
+            .onStart { _searchGame.update { UiState.Loading } }
             .collect { result ->
                 when (result) {
                     is AppResponse.Success -> {

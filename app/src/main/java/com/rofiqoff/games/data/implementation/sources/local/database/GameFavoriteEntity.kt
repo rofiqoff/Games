@@ -9,6 +9,7 @@ import com.rofiqoff.games.data.domain.model.GameDetail
 data class GameFavoriteEntity(
     @PrimaryKey
     val id: Long,
+    val slug: String,
     val name: String,
     val description: String,
     val released: String,
@@ -21,6 +22,7 @@ data class GameFavoriteEntity(
     val asGameDetail: GameDetail
         get() = GameDetail(
             id = id,
+            slug = slug,
             name = name,
             description = description,
             released = released,
