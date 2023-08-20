@@ -45,6 +45,10 @@ android {
         jvmToolchain(17)
     }
 
+    testOptions{
+        unitTests.isReturnDefaultValues = true
+    }
+
     buildFeatures {
         viewBinding = true
         dataBinding = true
@@ -97,6 +101,8 @@ dependencies {
     val roomVersion = "2.5.2"
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
+
+    implementation("androidx.paging:paging-runtime-ktx:3.2.0")
 
     val mockitoVersion = "4.4.0"
     testImplementation("org.mockito:mockito-core:$mockitoVersion")

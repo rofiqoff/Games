@@ -2,14 +2,13 @@ package com.rofiqoff.games.ui.dashboard.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rofiqoff.games.configuration.network.AppResponse
-import com.rofiqoff.games.data.domain.helper.UiState
-import com.rofiqoff.games.data.domain.model.Games
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.rofiqoff.games.data.domain.model.GameResult
 import com.rofiqoff.games.data.domain.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,41 +18,20 @@ class HomeViewModel @Inject constructor(
     private val repository: GameRepository,
 ) : ViewModel() {
 
-    private val _listGame = MutableStateFlow<UiState<Games>>(UiState.Loading)
-    val listGame: StateFlow<UiState<Games>> = _listGame
+    private val _dataGames = MutableStateFlow<PagingData<GameResult>?>(null)
+    val dataGames: StateFlow<PagingData<GameResult>?> = _dataGames
 
-    private val _searchGame = MutableStateFlow<UiState<Games>>(UiState.Loading)
-    val searchGame: StateFlow<UiState<Games>> = _searchGame
-
-    fun fetchListGame(page: Int) = viewModelScope.launch {
-        repository.getAllGames(page)
-            .onStart { _listGame.update { UiState.Loading } }
+    fun fetchListGame() = viewModelScope.launch {
+        repository.getAllGames().cachedIn(viewModelScope)
             .collect { result ->
-                when (result) {
-                    is AppResponse.Success -> {
-                        _listGame.update { UiState.Success(result.data) }
-                    }
-
-                    is AppResponse.Error -> {
-                        _listGame.update { UiState.Error(result.message) }
-                    }
-                }
+                _dataGames.update { result }
             }
     }
 
     fun searchGame(query: String) = viewModelScope.launch {
-        repository.searchGame(query)
-            .onStart { _searchGame.update { UiState.Loading } }
+        repository.searchGame(query).cachedIn(viewModelScope)
             .collect { result ->
-                when (result) {
-                    is AppResponse.Success -> {
-                        _searchGame.update { UiState.Success(result.data) }
-                    }
-
-                    is AppResponse.Error -> {
-                        _searchGame.update { UiState.Error(result.message) }
-                    }
-                }
+                _dataGames.update { result }
             }
     }
 

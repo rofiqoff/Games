@@ -8,4 +8,6 @@
 
     <string name="release_date_label">Released on %s</string>
     <string name="content_description_back_button">back</string>
+    <string name="retry">Retry</string>
+    <string name="failed_load_message">Failed to Load Data</string>
 </resources>

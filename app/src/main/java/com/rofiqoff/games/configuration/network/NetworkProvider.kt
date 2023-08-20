@@ -36,6 +36,10 @@ class NetworkProvider {
         return Interceptor { chain ->
             val original = chain.request()
             val originalHttpUrl = original.url
+
+            if (originalHttpUrl.queryParameter("key") != null)
+                return@Interceptor chain.proceed(original)
+
             val url = originalHttpUrl.newBuilder()
                 .addQueryParameter("key", BuildConfig.API_KEY)
                 .build()

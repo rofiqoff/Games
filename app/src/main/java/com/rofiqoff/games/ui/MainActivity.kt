@@ -1,7 +1,7 @@
 package com.rofiqoff.games.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.rofiqoff.games.R
 import dagger.hilt.android.AndroidEntryPoint
 

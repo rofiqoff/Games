@@ -37,9 +37,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(::inflate) {
                 viewModel.checkFavoriteState()
             }
 
-            binding.apply {
-                tvOverview.movementMethod = ScrollingMovementMethod()
-                tvOverview.setTextIsSelectable(true)
+            binding.tvOverview.apply {
+                movementMethod = ScrollingMovementMethod()
+                setTextIsSelectable(true)
             }
         }
     }
@@ -53,6 +53,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(::inflate) {
                         is UiState.Error -> {
                             showLoading(false)
                             showToast(it.message)
+                            binding.fabFavorite.isVisible = false
                         }
 
                         is UiState.Success -> updateUi(it.data)

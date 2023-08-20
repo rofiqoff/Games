@@ -9,23 +9,23 @@
         android:id="@+id/fab_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:contentDescription="@string/content_description_back_button"
         android:src="@drawable/ic_arrow_back"
         app:fabCustomSize="44dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:useCompatPadding="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:contentDescription="@string/content_description_back_button"
         android:src="@drawable/ic_favorite_default"
         app:fabCustomSize="44dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:useCompatPadding="true" />
 
     <ProgressBar
         android:id="@+id/pb_loading"

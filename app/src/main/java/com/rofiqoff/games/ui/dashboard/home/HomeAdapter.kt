@@ -2,18 +2,18 @@ package com.rofiqoff.games.ui.dashboard.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rofiqoff.games.data.domain.model.GameResult
 import com.rofiqoff.games.databinding.ItemGamesBinding
 
 class HomeAdapter(
     private val onClick: (GameResult) -> Unit,
-) : ListAdapter<GameResult, HomeAdapter.ViewHolder>(DIFF_UTIL) {
+) : PagingDataAdapter<GameResult, HomeAdapter.ViewHolder>(DIFF_UTIL) {
 
     companion object {
-        private val DIFF_UTIL = object : DiffUtil.ItemCallback<GameResult>() {
+        val DIFF_UTIL = object : DiffUtil.ItemCallback<GameResult>() {
             override fun areItemsTheSame(oldItem: GameResult, newItem: GameResult): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -31,7 +31,7 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        getItem(position)?.let { holder.onBind(it) }
     }
 
     inner class ViewHolder(
